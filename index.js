@@ -10,6 +10,8 @@ import seedCategories from './config/seedCategories.js';
 import categoryRoutes from './routes/categoryRoutes.js';
 import taskRoutes from './routes/taskRoutes.js';
 import userRoutes from './routes/userRoutes.js';
+import authRoutes from './routes/authRoutes.js';
+import { protect } from './middleware/authMiddleware.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -18,7 +20,7 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-// Routes
+// Public Routes
 app.get('/', (req, res) => {
     res.send('Hello World! Server is running.');
 });
@@ -29,9 +31,12 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
     customSiteTitle: 'Task Management API Documentation'
 }));
 
-app.use('/api/tasks', taskRoutes);
-app.use('/api/categories', categoryRoutes);
-app.use('/api/users', userRoutes);
+app.use('/api/auth', authRoutes);
+
+// Protected Routes
+app.use('/api/tasks', protect, taskRoutes);
+app.use('/api/categories', protect, categoryRoutes);
+app.use('/api/users', protect, userRoutes);
 
 const startServer = async () => {
     try {
