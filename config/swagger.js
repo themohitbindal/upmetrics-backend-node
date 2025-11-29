@@ -18,7 +18,101 @@ const options = {
             },
         ],
         components: {
+            securitySchemes: {
+                bearerAuth: {
+                    type: 'http',
+                    scheme: 'bearer',
+                    bearerFormat: 'JWT'
+                }
+            },
             schemas: {
+                User: {
+                    type: 'object',
+                    required: ['email'],
+                    properties: {
+                        _id: {
+                            type: 'string',
+                            description: 'Auto-generated user ID',
+                            example: '507f1f77bcf86cd799439099'
+                        },
+                        email: {
+                            type: 'string',
+                            description: 'User email (unique, immutable)',
+                            example: 'john.doe@example.com'
+                        },
+                        name: {
+                            type: 'string',
+                            description: 'User name',
+                            example: 'John Doe'
+                        },
+                        age: {
+                            type: 'number',
+                            description: 'User age',
+                            example: 28
+                        },
+                        profileImage: {
+                            type: 'string',
+                            description: 'URL of the user profile image',
+                            example: 'https://example.com/avatar.jpg'
+                        },
+                        createdAt: {
+                            type: 'string',
+                            format: 'date-time',
+                            description: 'User creation timestamp'
+                        },
+                        updatedAt: {
+                            type: 'string',
+                            format: 'date-time',
+                            description: 'User last update timestamp'
+                        }
+                    }
+                },
+                UserInput: {
+                    type: 'object',
+                    required: ['email'],
+                    properties: {
+                        email: {
+                            type: 'string',
+                            description: 'User email (unique, immutable)',
+                            example: 'john.doe@example.com'
+                        },
+                        name: {
+                            type: 'string',
+                            description: 'User name',
+                            example: 'John Doe'
+                        },
+                        age: {
+                            type: 'number',
+                            description: 'User age',
+                            example: 28
+                        },
+                        profileImage: {
+                            type: 'string',
+                            description: 'URL of the user profile image',
+                            example: 'https://example.com/avatar.jpg'
+                        }
+                    }
+                },
+                UserUpdateInput: {
+                    type: 'object',
+                    properties: {
+                        name: {
+                            type: 'string',
+                            description: 'User name',
+                            example: 'Updated Name'
+                        },
+                        age: {
+                            type: 'number',
+                            description: 'User age',
+                            example: 30
+                        },
+                        profileImage: {
+                            type: 'string',
+                            description: 'URL of the user profile image',
+                            example: 'https://example.com/new-avatar.jpg'
+                        }
+                    }
+                },
                 Category: {
                     type: 'object',
                     required: ['name', 'slug'],

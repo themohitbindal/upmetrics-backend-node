@@ -15,6 +15,8 @@ const router = express.Router();
  *   get:
  *     summary: Get all tasks
  *     tags: [Tasks]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: query
  *         name: categoryId
@@ -50,6 +52,8 @@ const router = express.Router();
  *   post:
  *     summary: Create a new task
  *     tags: [Tasks]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -92,6 +96,8 @@ router.route('/')
  *   get:
  *     summary: Get a single task by ID
  *     tags: [Tasks]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -128,6 +134,8 @@ router.route('/')
  *   put:
  *     summary: Update a task by ID
  *     tags: [Tasks]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -176,6 +184,8 @@ router.route('/')
  *   delete:
  *     summary: Delete a task by ID
  *     tags: [Tasks]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id

@@ -18,6 +18,8 @@ const router = express.Router();
  *   get:
  *     summary: Get all categories
  *     tags: [Categories]
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: List of all categories
@@ -41,6 +43,8 @@ const router = express.Router();
  *   post:
  *     summary: Create a new category
  *     tags: [Categories]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -74,6 +78,8 @@ const router = express.Router();
  *   put:
  *     summary: Updating categories is not allowed
  *     tags: [Categories]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -87,6 +93,8 @@ const router = express.Router();
  *   delete:
  *     summary: Deleting categories is not allowed
  *     tags: [Categories]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
