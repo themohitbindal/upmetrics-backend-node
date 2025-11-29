@@ -19,9 +19,45 @@ const options = {
         ],
         components: {
             schemas: {
+                Category: {
+                    type: 'object',
+                    required: ['name', 'slug'],
+                    properties: {
+                        _id: {
+                            type: 'string',
+                            description: 'Auto-generated category ID',
+                            example: '692a7d745c007b92ffde6b92'
+                        },
+                        name: {
+                            type: 'string',
+                            description: 'Category display name',
+                            example: 'Daily tasks'
+                        },
+                        slug: {
+                            type: 'string',
+                            description: 'Category slug (unique, lowercase)',
+                            example: 'daily-tasks'
+                        },
+                        isSystem: {
+                            type: 'boolean',
+                            description: 'Whether this is a predefined system category',
+                            example: true
+                        },
+                        createdAt: {
+                            type: 'string',
+                            format: 'date-time',
+                            description: 'Category creation timestamp'
+                        },
+                        updatedAt: {
+                            type: 'string',
+                            format: 'date-time',
+                            description: 'Category last update timestamp'
+                        }
+                    }
+                },
                 Task: {
                     type: 'object',
-                    required: ['title'],
+                    required: ['title', 'category'],
                     properties: {
                         _id: {
                             type: 'string',
@@ -54,6 +90,13 @@ const options = {
                             description: 'Task priority',
                             example: 'medium'
                         },
+                        category: {
+                            oneOf: [
+                                { type: 'string', description: 'Category ID', example: '692a7d745c007b92ffde6b92' },
+                                { $ref: '#/components/schemas/Category' }
+                            ],
+                            description: 'Task category (populated object when reading, ID when writing)'
+                        },
                         createdAt: {
                             type: 'string',
                             format: 'date-time',
@@ -68,7 +111,7 @@ const options = {
                 },
                 TaskInput: {
                     type: 'object',
-                    required: ['title'],
+                    required: ['title', 'category'],
                     properties: {
                         title: {
                             type: 'string',
@@ -95,6 +138,11 @@ const options = {
                             default: 'medium',
                             description: 'Task priority',
                             example: 'medium'
+                        },
+                        category: {
+                            type: 'string',
+                            description: 'Category ID to which this task belongs',
+                            example: '692a7d745c007b92ffde6b92'
                         }
                     }
                 },

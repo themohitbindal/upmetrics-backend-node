@@ -6,6 +6,8 @@ import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 import connectDB from './config/db.js';
 import swaggerSpec from './config/swagger.js';
+import seedCategories from './config/seedCategories.js';
+import categoryRoutes from './routes/categoryRoutes.js';
 import taskRoutes from './routes/taskRoutes.js';
 
 const app = express();
@@ -27,10 +29,12 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
 }));
 
 app.use('/api/tasks', taskRoutes);
+app.use('/api/categories', categoryRoutes);
 
 const startServer = async () => {
     try {
         await connectDB();
+        await seedCategories();
         app.listen(PORT, () => {
             console.log(`Server is running on port ${PORT}`);
         });

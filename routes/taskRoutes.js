@@ -15,6 +15,14 @@ const router = express.Router();
  *   get:
  *     summary: Get all tasks
  *     tags: [Tasks]
+ *     parameters:
+ *       - in: query
+ *         name: categoryId
+ *         schema:
+ *           type: string
+ *         required: false
+ *         description: Filter tasks by category ID
+ *         example: "665f1f77bcf86cd799439022"
  *     responses:
  *       200:
  *         description: List of all tasks
@@ -53,6 +61,7 @@ const router = express.Router();
  *             description: "Write comprehensive documentation for the project"
  *             status: "pending"
  *             priority: "medium"
+ *             category: "692a7d745c007b92ffde6b92"
  *     responses:
  *       201:
  *         description: Task created successfully
@@ -138,6 +147,7 @@ router.route('/')
  *             description: "Updated description"
  *             status: "in-progress"
  *             priority: "high"
+ *             category: "665f1f77bcf86cd799439022"
  *     responses:
  *       200:
  *         description: Task updated successfully

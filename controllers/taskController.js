@@ -1,9 +1,16 @@
 import Task from '../models/Task.js';
+import Category from '../models/Category.js';
 
 // get all tasks
 export const getTasks = async (req, res) => {
     try {
-        const tasks = await Task.find().sort({ createdAt: -1 });
+        const filter = {};
+        if (req.query.categoryId) {
+            filter.category = req.query.categoryId;
+        }
+        const tasks = await Task.find(filter)
+            .populate('category')
+            .sort({ createdAt: -1 });
         res.status(200).json({
             success: true,
             count: tasks.length,
@@ -21,7 +28,7 @@ export const getTasks = async (req, res) => {
 // get single task
 export const getTask = async (req, res) => {
     try {
-        const task = await Task.findById(req.params.id);
+        const task = await Task.findById(req.params.id).populate('category');
         
         if (!task) {
             return res.status(404).json({
@@ -46,7 +53,20 @@ export const getTask = async (req, res) => {
 // create new task
 export const createTask = async (req, res) => {
     try {
-        const task = await Task.create(req.body);
+        const { category: categoryId } = req.body;
+
+        const category = await Category.findById(categoryId);
+        if (!category) {
+            return res.status(400).json({
+                success: false,
+                message: 'Invalid category',
+            });
+        }
+
+        const task = await Task.create({
+            ...req.body,
+            category: categoryId,
+        });
         res.status(201).json({
             success: true,
             data: task
@@ -63,6 +83,16 @@ export const createTask = async (req, res) => {
 // update task
 export const updateTask = async (req, res) => {
     try {
+        if (req.body.category) {
+            const category = await Category.findById(req.body.category);
+            if (!category) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Invalid category',
+                });
+            }
+        }
+
         const task = await Task.findByIdAndUpdate(
             req.params.id,
             req.body,
@@ -79,9 +109,11 @@ export const updateTask = async (req, res) => {
             });
         }
 
+        const populatedTask = await Task.findById(task._id).populate('category');
+
         res.status(200).json({
             success: true,
-            data: task
+            data: populatedTask
         });
     } catch (error) {
         res.status(400).json({
