@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
+import { getFileUrl } from '../middleware/uploadMiddleware.js';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'changeme_jwt_secret';
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '7d';
@@ -30,27 +31,39 @@ export const signUp = async (req, res) => {
       });
     }
 
+    // Handle file upload - if file was uploaded, use the filename
+    let profileImageValue = profileImage;
+    if (req.file) {
+      profileImageValue = req.file.filename;
+    }
+
     const user = await User.create({
       email,
       password,
       name,
       age,
-      profileImage,
+      profileImage: profileImageValue,
     });
 
     const token = createToken(user._id);
+
+    // Convert file path to URL for response
+    const userData = user.toObject();
+    if (userData.profileImage) {
+      userData.profileImage = getFileUrl(userData.profileImage);
+    }
 
     res.status(201).json({
       success: true,
       token,
       data: {
-        _id: user._id,
-        email: user.email,
-        name: user.name,
-        age: user.age,
-        profileImage: user.profileImage,
-        createdAt: user.createdAt,
-        updatedAt: user.updatedAt,
+        _id: userData._id,
+        email: userData.email,
+        name: userData.name,
+        age: userData.age,
+        profileImage: userData.profileImage,
+        createdAt: userData.createdAt,
+        updatedAt: userData.updatedAt,
       },
     });
   } catch (error) {
@@ -93,17 +106,23 @@ export const signIn = async (req, res) => {
 
     const token = createToken(user._id);
 
+    // Convert file path to URL for response
+    const userData = user.toObject();
+    if (userData.profileImage) {
+      userData.profileImage = getFileUrl(userData.profileImage);
+    }
+
     res.status(200).json({
       success: true,
       token,
       data: {
-        _id: user._id,
-        email: user.email,
-        name: user.name,
-        age: user.age,
-        profileImage: user.profileImage,
-        createdAt: user.createdAt,
-        updatedAt: user.updatedAt,
+        _id: userData._id,
+        email: userData.email,
+        name: userData.name,
+        age: userData.age,
+        profileImage: userData.profileImage,
+        createdAt: userData.createdAt,
+        updatedAt: userData.updatedAt,
       },
     });
   } catch (error) {

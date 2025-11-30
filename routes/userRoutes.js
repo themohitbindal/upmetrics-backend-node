@@ -1,5 +1,7 @@
 import express from 'express';
 import { getUser, updateUser } from '../controllers/userController.js';
+import { uploadProfileImage } from '../middleware/uploadMiddleware.js';
+import { handleUploadError } from '../middleware/errorHandler.js';
 
 const router = express.Router();
 
@@ -91,7 +93,7 @@ const router = express.Router();
  */
 
 router.get('/:id', getUser);
-router.put('/:id', updateUser);
+router.put('/:id', uploadProfileImage, handleUploadError, updateUser);
 
 export default router;
 

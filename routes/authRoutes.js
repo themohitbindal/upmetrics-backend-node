@@ -1,5 +1,7 @@
 import express from 'express';
 import { signUp, signIn, resetPassword } from '../controllers/authController.js';
+import { uploadProfileImage } from '../middleware/uploadMiddleware.js';
+import { handleUploadError } from '../middleware/errorHandler.js';
 
 const router = express.Router();
 
@@ -108,7 +110,7 @@ const router = express.Router();
  *         description: User not found
  */
 
-router.post('/signup', signUp);
+router.post('/signup', uploadProfileImage, handleUploadError, signUp);
 router.post('/signin', signIn);
 router.post('/reset-password', resetPassword);
 

@@ -4,6 +4,8 @@ dotenv.config();
 import express from 'express';
 import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
 import connectDB from './config/db.js';
 import swaggerSpec from './config/swagger.js';
 import seedCategories from './config/seedCategories.js';
@@ -44,6 +46,11 @@ const corsOptions = {
 // Middleware
 app.use(cors(corsOptions));
 app.use(express.json());
+
+// Serve static files from public directory
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+app.use(express.static(join(__dirname, 'public')));
 
 // Public Routes
 app.get('/', (req, res) => {
