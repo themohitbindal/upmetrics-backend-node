@@ -47,12 +47,12 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 
-// Serve static files from public directory
+// from public directory this tells to serve static files
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 app.use(express.static(join(__dirname, 'public')));
 
-// Public Routes for testing
+// todo:remove later (Public Routes for testing)
 app.get('/', (req, res) => {
     res.send('Hello World! Server is running and this is for testing server at  /');
 });

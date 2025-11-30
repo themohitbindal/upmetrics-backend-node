@@ -25,11 +25,11 @@ export const getTasks = async (req, res) => {
     }
 };
 
-// get single task
+// get single task (although not needed now) ; todo: remove later if not used
 export const getTask = async (req, res) => {
     try {
         const task = await Task.findById(req.params.id).populate('category');
-        
+
         if (!task) {
             return res.status(404).json({
                 success: false,

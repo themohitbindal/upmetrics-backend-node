@@ -18,7 +18,7 @@ export const getCategories = async (req, res) => {
   }
 };
 
-// create new (non-system) category
+// create new (non-system) category which will be needed in afterwords (if i apply them in FE)
 export const createCategory = async (req, res) => {
   try {
     const { name, slug } = req.body;
@@ -49,7 +49,7 @@ export const createCategory = async (req, res) => {
   }
 };
 
-// block updates
+// block updates (for now)
 export const notAllowedUpdateCategory = async (req, res) => {
   res.status(405).json({
     success: false,
@@ -57,7 +57,7 @@ export const notAllowedUpdateCategory = async (req, res) => {
   });
 };
 
-// block deletes
+// block deletes (for now)
 export const notAllowedDeleteCategory = async (req, res) => {
   res.status(405).json({
     success: false,

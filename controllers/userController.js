@@ -7,7 +7,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Get single user (me)
+// Get single user (me) ; todo: remove later if not used (beacuse I am sending this info at the time of signup and signin)
 export const getUser = async (req, res) => {
   try {
     const { id } = req.params;
@@ -61,8 +61,8 @@ export const updateUser = async (req, res) => {
       const currentUser = await User.findById(id);
       if (currentUser && currentUser.profileImage) {
         // Only delete if it's a local file (not a URL)
-        if (!currentUser.profileImage.startsWith('http://') && 
-            !currentUser.profileImage.startsWith('https://')) {
+        if (!currentUser.profileImage.startsWith('http://') &&
+          !currentUser.profileImage.startsWith('https://')) {
           const oldImagePath = path.join(__dirname, '..', 'public', 'uploads', currentUser.profileImage);
           // Delete old image file if it exists
           if (fs.existsSync(oldImagePath)) {
