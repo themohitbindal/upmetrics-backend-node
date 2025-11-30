@@ -52,12 +52,12 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 app.use(express.static(join(__dirname, 'public')));
 
-// Public Routes
+// Public Routes for testing
 app.get('/', (req, res) => {
     res.send('Hello World! Server is running and this is for testing server at  /');
 });
 
-// Swagger Documentation
+// Swagger Documentation for testing
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
     customCss: '.swagger-ui .topbar { display: none }',
     customSiteTitle: 'Task Management API Documentation'

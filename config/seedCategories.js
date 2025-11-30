@@ -8,6 +8,7 @@ const DEFAULT_CATEGORIES = [
   { name: 'Coding tasks', slug: 'coding-tasks' },
 ];
 
+// making sure that the default categories are created in the database
 const seedCategories = async () => {
   try {
     for (const cat of DEFAULT_CATEGORIES) {

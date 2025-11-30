@@ -52,8 +52,8 @@ const options = {
                         },
                         profileImage: {
                             type: 'string',
-                            description: 'URL of the user profile image',
-                            example: 'https://example.com/avatar.jpg'
+                            description: 'URL of the user profile image (returned as /uploads/filename.jpg)',
+                            example: '/uploads/image-1234567890.jpg'
                         },
                         createdAt: {
                             type: 'string',
@@ -88,7 +88,7 @@ const options = {
                         },
                         profileImage: {
                             type: 'string',
-                            description: 'URL of the user profile image',
+                            description: 'URL of the user profile image (or file upload via multipart/form-data, max 1MB)',
                             example: 'https://example.com/avatar.jpg'
                         }
                     }
@@ -108,7 +108,7 @@ const options = {
                         },
                         profileImage: {
                             type: 'string',
-                            description: 'URL of the user profile image',
+                            description: 'URL of the user profile image (or file upload via multipart/form-data, max 1MB)',
                             example: 'https://example.com/new-avatar.jpg'
                         }
                     }

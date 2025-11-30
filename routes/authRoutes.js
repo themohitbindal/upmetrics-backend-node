@@ -13,11 +13,40 @@ const router = express.Router();
  *
  * /api/auth/signup:
  *   post:
- *     summary: Sign up a new user
+ *     summary: Sign up a new user (supports image upload)
  *     tags: [Auth]
  *     requestBody:
  *       required: true
  *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - password
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 description: User email (unique, immutable)
+ *                 example: "john.doe@example.com"
+ *               password:
+ *                 type: string
+ *                 format: password
+ *                 description: User password (min 6 characters)
+ *                 example: "password123"
+ *               name:
+ *                 type: string
+ *                 description: User name (optional)
+ *                 example: "John Doe"
+ *               age:
+ *                 type: number
+ *                 description: User age (optional)
+ *                 example: 28
+ *               profileImage:
+ *                 type: string
+ *                 format: binary
+ *                 description: "Profile image file (optional, max 1MB, allowed: jpeg, jpg, png, gif, webp)"
  *         application/json:
  *           schema:
  *             $ref: '#/components/schemas/UserInput'
@@ -42,7 +71,11 @@ const router = express.Router();
  *                 data:
  *                   $ref: '#/components/schemas/User'
  *       400:
- *         description: Bad request - validation error
+ *         description: Bad request - validation error or file upload error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
  *
  * /api/auth/signin:
  *   post:

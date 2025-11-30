@@ -44,7 +44,7 @@ const router = express.Router();
  *             schema:
  *               $ref: '#/components/schemas/Error'
  *   put:
- *     summary: Update an existing user (email cannot be changed)
+ *     summary: Update an existing user (email cannot be changed, supports image upload)
  *     tags: [Users]
  *     security:
  *       - bearerAuth: []
@@ -58,6 +58,22 @@ const router = express.Router();
  *     requestBody:
  *       required: true
  *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: User name (optional)
+ *                 example: "Updated Name"
+ *               age:
+ *                 type: number
+ *                 description: User age (optional)
+ *                 example: 30
+ *               profileImage:
+ *                 type: string
+ *                 format: binary
+ *                 description: "Profile image file (optional, max 1MB, allowed: jpeg, jpg, png, gif, webp). Old image will be automatically deleted."
  *         application/json:
  *           schema:
  *             $ref: '#/components/schemas/UserUpdateInput'
@@ -79,7 +95,7 @@ const router = express.Router();
  *                 data:
  *                   $ref: '#/components/schemas/User'
  *       400:
- *         description: Bad request - validation error
+ *         description: Bad request - validation error or file upload error
  *         content:
  *           application/json:
  *             schema:
