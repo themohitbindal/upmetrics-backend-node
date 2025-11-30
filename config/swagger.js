@@ -12,10 +12,10 @@ const options = {
             },
         },
         servers: [
-            {
-                url: `http://localhost:${process.env.PORT || 3000}`,
-                description: 'Development server',
-            },
+            ...(process.env.API_URL 
+                ? [{ url: process.env.API_URL, description: 'Production server' }]
+                : [{ url: `http://localhost:${process.env.PORT || 3000}`, description: 'Development server' }]
+            ),
         ],
         components: {
             securitySchemes: {

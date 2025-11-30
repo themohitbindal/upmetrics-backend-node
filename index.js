@@ -17,10 +17,12 @@ import { protect } from './middleware/authMiddleware.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const HOST = process.env.HOST || '0.0.0.0'; // Listen on all interfaces for EC2
 
-// CORS Configuration - Allow common development ports
-const corsOptions = {
-    origin: [
+// CORS Configuration - Allow common development ports and production domains
+const allowedOrigins = process.env.ALLOWED_ORIGINS 
+    ? process.env.ALLOWED_ORIGINS.split(',').map(origin => origin.trim())
+    : [
         'http://localhost:3000',
         'http://localhost:3001',
         'http://localhost:5173',
@@ -37,7 +39,19 @@ const corsOptions = {
         'http://127.0.0.1:5176',
         'http://127.0.0.1:8080',
         'http://127.0.0.1:4200'
-    ],
+    ];
+
+const corsOptions = {
+    origin: function (origin, callback) {
+        // Allow requests with no origin (like mobile apps or curl requests)
+        if (!origin) return callback(null, true);
+        
+        if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV === 'development') {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
@@ -74,8 +88,9 @@ const startServer = async () => {
     try {
         await connectDB();
         await seedCategories();
-        app.listen(PORT, () => {
-            console.log(`Server is running on port ${PORT}`);
+        app.listen(PORT, HOST, () => {
+            console.log(`Server is running on http://${HOST}:${PORT}`);
+            console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
         });
     } catch (error) {
         console.error('Failed to start server:', error);
